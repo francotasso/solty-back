@@ -28,7 +28,7 @@ app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(bodyParser.json());
-app.use(cors({ credentials: true, origin: 'http://localhost:8080' }));
+app.use(cors({ credentials: true, origin: 'https://solty-front.herokuapp.com' }));
 app.use(session({
     secret: 'secretproductsapp',
     resave: true,
