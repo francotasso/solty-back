@@ -16,8 +16,24 @@ const payments = require('./routes/payments.js');
 db.connection;
 
 //Settings
-app.set('port', process.env.PORT || 3000);
+app.set('port', normalizePort(process.env.PORT || '3000'));
 app.set('json spaces', 2);
+
+function normalizePort(val) {
+    var port = parseInt(val, 10);
+
+    if (isNaN(port)) {
+        // named pipe
+        return val;
+    }
+
+    if (port >= 0) {
+        // port number
+        return port;
+    }
+
+    return false;
+}
 
 //Middlewares
 app.use(morgan('dev'));
