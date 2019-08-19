@@ -29,15 +29,26 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(cors({ credentials: true, origin: 'https://solty-front.herokuapp.com' }));
+app.use(function (req, res, next) {
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
+    if ('OPTIONS' == req.method) {
+        res.send(200);
+    } else {
+        next();
+    }
+});
 app.use(session({
     secret: 'secretproductsapp',
     resave: true,
     saveUninitialized: true,
-    cookie: {
+    /*cookie: {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         maxAge: 24 * 60 * 60 * 1000
-    }
+    }*/
 }));
 app.use(passport.initialize());
 app.use(passport.session());
