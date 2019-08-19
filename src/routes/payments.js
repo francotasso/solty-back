@@ -5,15 +5,15 @@ const payment = require('../controllers/payment');
 const { isAuthenticated } = require('../helpers/auth');
 
 /* GET all products */
-router.get('/payments', payment.getAllPayments);
+router.get('/payments', isAuthenticated, payment.getAllPayments);
 
 /* GET one product*/
-router.get('/payment/:paymentId', payment.getPayment);
+router.get('/payment/:paymentId', isAuthenticated, payment.getPayment);
 
 /* POST a new payment */
-router.post('/payment', payment.newPayment);
+router.post('/payment', isAuthenticated, payment.newPayment);
 
 /* DELETE one payment */
-router.delete('/payment/:paymentId', payment.deletePayment);
+router.delete('/payment/:paymentId', isAuthenticated, payment.deletePayment);
 
 module.exports = router;
