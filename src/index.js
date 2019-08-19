@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const passport = require('passport');
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
 const db = require('./dbconnection.js');
@@ -16,24 +17,11 @@ const payments = require('./routes/payments.js');
 db.connection;
 
 //Settings
-app.set('port', normalizePort(process.env.PORT || '3000'));
+app.set('port', process.env.PORT || 3000);
 app.set('json spaces', 2);
 
-function normalizePort(val) {
-    var port = parseInt(val, 10);
-
-    if (isNaN(port)) {
-        // named pipe
-        return val;
-    }
-
-    if (port >= 0) {
-        // port number
-        return port;
-    }
-
-    return false;
-}
+//static files
+app.use(express.static(path.join(__dirname, 'public')));
 
 //Middlewares
 app.use(morgan('dev'));
