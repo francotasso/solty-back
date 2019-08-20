@@ -28,7 +28,7 @@ app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(bodyParser.json());
-app.use(cors({ credentials: true, origin: 'http://solty.herokuapp.com' }));
+app.use(cors({ credentials: true, origin: 'https://solty.herokuapp.com' }));
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Origin', req.headers.origin);
