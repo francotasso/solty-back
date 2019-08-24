@@ -20,6 +20,7 @@ async function newUser(req, res, next) {
 async function editUser(req, res, next) {
     const newUser = req.body;
     const validEmail = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(newUser.email);
+    const duplicateEmail = User.find({email: newUser.email.trim()}).pretty();
     const validPhone = /^[9][0-9]{8}$/.test(newUser.phone);
     const { userId } = req.params;
     if (newUser.firstName.trim().length == 0 || newUser.lastName.trim().length == 0 || newUser.email.trim().length == 0 || newUser.gender.trim().length == 0 || newUser.phone.trim().length == 0 || newUser.birthday == null) {
@@ -27,6 +28,8 @@ async function editUser(req, res, next) {
     }
     if (!validEmail) {
         res.status(500).json({ text: 'Ingrese un email válido' });
+    } else if (duplicateEmail) {
+        res.status(500).json({ text: 'Ya se encuentra registrado este email'});
     } else if (!validPhone) {
         res.status(500).json({ text: 'Ingrese un celular válido' });
     } else {
@@ -44,12 +47,15 @@ async function deleteUser(req, res, next) {
 async function register(req, res, next) {
     const { firstName, lastName, email, password, gender, phone, birthday, creationDate } = req.body;
     const validEmail = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(email);
+    const duplicateEmail = User.find({email: newUser.email.trim()}).pretty();
     const validPassword = /^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/.test(password);
     const validPhone = /^[9][0-9]{8}$/.test(phone);
     if (firstName.trim().length == 0 || lastName.trim().length == 0 || email.trim().length == 0 || password.trim().length == 0 || phone.trim().length == 0) {
         res.status(500).json({ text: 'Complete todos los campos' });
     } else if (!validEmail) {
         res.status(500).json({ text: 'Ingrese un email válido' });
+    } else if (duplicateEmail) {
+        res.status(500).json({ text: 'Ya se encuentra registrado este email'});
     } else if (!validPassword) {
         res.status(500).json({ text: 'Ingrese una contraseña válida' });
     } else if (!validPhone) {
