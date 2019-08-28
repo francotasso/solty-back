@@ -27,8 +27,9 @@ async function editUser(req, res, next) {
         res.status(500).json({ text: 'Complete todos los campos' });
     } else if (!validEmail) {
         res.status(500).json({ text: 'Ingrese un email válido' });
-    } else if (duplicateEmail && duplicateEmail[0].email != newUser.email) {
-        res.status(500).json({ text: 'Ya se encuentra registrado este email' });
+    } else if (duplicateEmail) {
+        if (duplicateEmail[0].email != newUser.email)
+            res.status(500).json({ text: 'Ya se encuentra registrado este email' });
     } else if (!validPhone) {
         res.status(500).json({ text: 'Ingrese un celular válido' });
     } else {
