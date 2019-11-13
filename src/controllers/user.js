@@ -56,10 +56,10 @@ async function register(req, res, next) {
         res.status(500).json({ text: 'Complete todos los campos' });
     } else if (!validEmail) {
         res.status(500).json({ text: 'Ingrese un email válido' });
-    } else if (duplicateEmail) {
+    } else if (duplicateEmail.length>0) {
         res.status(500).json({ text: 'Ya se encuentra registrado este email' });
     } else if (!validPassword) {
-        res.status(500).json({ text: 'Ingrese una contraseña válida' });
+        res.status(500).json({ text: 'La contraseña debe tener entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula' });
     } else if (!validPhone) {
         res.status(500).json({ text: 'Ingrese un celular válido' });
     } else {
