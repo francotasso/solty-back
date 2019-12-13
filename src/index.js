@@ -3,13 +3,14 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const passport = require('passport');
+const passportSetup = require('./config/passport');
 const cors = require('cors');
 const path = require('path');
-
 const app = express();
 const db = require('./dbconnection.js');
-require('./config/passport');
+const keys = require('./config/keys');
 const users = require('./routes/user.js');
+const oauth = require('./routes/oauth.js');
 const products = require('./routes/product.js');
 const payments = require('./routes/payments.js');
 
@@ -28,7 +29,7 @@ app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(bodyParser.json());
-app.use(cors({ credentials: true, origin: 'https://solty.herokuapp.com' }));
+app.use(cors({ credentials: true, origin: 'http://localhost:8080' }));
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Origin', req.headers.origin);
@@ -40,22 +41,25 @@ app.use(function (req, res, next) {
         next();
     }
 });
+
+//session
 app.use(session({
-    secret: 'secretproductsapp',
-    resave: true,
-    saveUninitialized: true,
-    /*cookie: {
+    secret: keys.SESSION.secret,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         maxAge: 24 * 60 * 60 * 1000
-    }*/
+    }
 }));
 app.use(passport.initialize());
 app.use(passport.session());
 
 //Routes
-app.use(products);
 app.use(users);
+app.use(oauth);
+app.use(products);
 app.use(payments);
 
 app.listen(app.get('port'), () => {

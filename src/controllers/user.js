@@ -1,4 +1,3 @@
-const passport = require('../config/passport');
 const User = require('../models/user');
 
 async function getAllUsers(req, res, next) {
@@ -12,54 +11,41 @@ async function getUser(req, res, next) {
     res.status(200).json(user);
 }
 
-async function newUser(req, res, next) {
-    const newUser = new User(req.body);
-    const user = await newUser.save();
-    res.status(200).json(user);
-}
-
-async function editUser(req, res, next) {
+async function updateUser(req, res, next) {
     const newUser = req.body;
     const validEmail = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(newUser.email);
     const duplicateEmail = await User.find({ email: newUser.email.trim() });
     const validPhone = /^[9][0-9]{8}$/.test(newUser.phone);
     const { userId } = req.params;
-    console.log(passport.loggedUser.email);
     if (newUser.firstName.trim().length == 0 || newUser.lastName.trim().length == 0 || newUser.email.trim().length == 0 || newUser.gender.trim().length == 0 || newUser.phone.trim().length == 0 || newUser.birthday == null) {
         res.status(500).json({ text: 'Complete todos los campos' });
     } else if (!validEmail) {
         res.status(500).json({ text: 'Ingrese un email válido' });
-    } else if (duplicateEmail.length > 0 && newUser.email != passport.loggedUser.email) {
+    } else if (duplicateEmail.length > 0 && newUser.email != req.user.email) {
         res.status(500).json({ text: 'Ya se encuentra registrado este email' });
     } else if (!validPhone) {
         res.status(500).json({ text: 'Ingrese un celular válido' });
     } else {
         await User.findByIdAndUpdate(userId, newUser);
-        passport.loggedUser.email = newUser.email;
         res.status(200).json({ text: 'Actualizado correctamente' });
     }
 }
 
-async function deleteUser(req, res, next) {
-    const { userId } = req.params;
-    await User.findByIdAndDelete(userId);
-    res.status(200).json({ success: true });
-}
-
-async function register(req, res, next) {
+async function registerUser(req, res, next) {
     const { firstName, lastName, email, password, gender, phone, birthday, creationDate } = req.body;
     const validEmail = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(email);
     const duplicateEmail = await User.find({ email: email.trim() });
+    console.log(duplicateEmail);
     const validPassword = /^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/.test(password);
     const validPhone = /^[9][0-9]{8}$/.test(phone);
     if (firstName.trim().length == 0 || lastName.trim().length == 0 || email.trim().length == 0 || password.trim().length == 0 || phone.trim().length == 0) {
         res.status(500).json({ text: 'Complete todos los campos' });
     } else if (!validEmail) {
         res.status(500).json({ text: 'Ingrese un email válido' });
-    } else if (duplicateEmail.length>0) {
+    } else if (duplicateEmail.length > 0) {
         res.status(500).json({ text: 'Ya se encuentra registrado este email' });
     } else if (!validPassword) {
-        res.status(500).json({ text: 'La contraseña debe tener entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula' });
+        res.status(500).json({ text: 'Ingrese una contraseña válida' });
     } else if (!validPhone) {
         res.status(500).json({ text: 'Ingrese un celular válido' });
     } else {
@@ -74,6 +60,12 @@ async function register(req, res, next) {
     }
 }
 
+async function deleteUser(req, res, next) {
+    const { userId } = req.params;
+    await User.findByIdAndDelete(userId);
+    res.status(200).json({ success: true });
+}
+
 async function login(req, res, next) {
     res.status(200).json({ text: `${req.user.firstName} ${req.user.lastName}`, id: req.user._id });
 }
@@ -86,10 +78,9 @@ async function logout(req, res, next) {
 module.exports = {
     getAllUsers,
     getUser,
-    newUser,
-    editUser,
+    updateUser,
+    registerUser,
     deleteUser,
-    register,
     login,
     logout
 }
