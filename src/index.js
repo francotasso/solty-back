@@ -5,6 +5,7 @@ const session = require('express-session');
 const passport = require('passport');
 const passportSetup = require('./config/passport');
 const cors = require('cors');
+const API = require('./API/API')
 const path = require('path');
 const app = express();
 const db = require('./dbconnection.js');
@@ -29,7 +30,7 @@ app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(bodyParser.json());
-app.use(cors({ credentials: true, origin: 'https://solty.herokuapp.com' }));
+app.use(cors({ credentials: true, origin: API.API.url }));
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Origin', req.headers.origin);
