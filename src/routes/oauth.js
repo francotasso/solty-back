@@ -22,7 +22,6 @@ router.get('/auth/google', passport.authenticate('google', {
 router.get('/auth/google/redirect', passport.authenticate('google'),
     (req, res) => {
         let url = `${API.API.url}/oauth`
-        console.log(url)
         res.redirect(url);
     }
 );
