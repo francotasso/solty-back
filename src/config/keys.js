@@ -4,13 +4,13 @@ const GOOGLE = {
 }
 
 const FACEBOOK = {
-    clientID: '402142500485204',
-    clientSecret: '3c11b8444f7cec705cb98fd60b79d69c'
+    clientID: '426038158326508',
+    clientSecret: 'e0548a97a1447614cdf3f370be7e1eb4'
 }
 
 const SESSION = {
     cookieKey: 'a%bZ0$whP@fFdiX26qPnM&',
-    secret: 'secrethuayrotechback'
+    secret: 'secretsoltyback'
 }
 
 module.exports = {
