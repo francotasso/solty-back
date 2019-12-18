@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const User = require('./user');
-const Product = require('./product');
 const timeZone = require('mongoose-timezone');
 
 const paymentSchema = new Schema({
@@ -11,8 +9,14 @@ const paymentSchema = new Schema({
     expirationYear: { type: Number, required: true },
     securityCode: { type: Number, required: true },
     transactionDate: { type: Date, default: Date.now },
-    user: { type: User.schema, required: true },
-    product: { type: Product.schema, required: true },
+    userId: { type: mongoose.Schema.Types.ObjectId, required: true },
+    products: [{ 
+        id: {type: mongoose.Schema.Types.ObjectId, required: true},
+        size: {type: String, required: true},
+        color: {type: String, required: true},
+        quantity: {type: Number, required: true}
+    }],
+    totalPrice: {type: Number, required: true}
 });
 
 paymentSchema.plugin(timeZone, { paths: ['transactionDate'] });
