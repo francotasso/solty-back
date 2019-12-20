@@ -5,6 +5,26 @@ async function getAllProducts(req, res, next) {
     res.status(200).json(products);
 }
 
+async function getProductsPagination(req, res, next){
+    const perPage = 5
+    const numPage = parseInt(req.params.numPage)
+    const skipPage = (numPage-1)*perPage
+    const numProducts = await Product.count()
+    let numPages
+    if(numProducts%perPage==0){
+        numPages = parseInt((numProducts/perPage))
+    } else {
+        numPages = parseInt((numProducts/perPage)+1)
+    }
+    const productsPaginate = await Product.find({}).skip(skipPage).limit(perPage).lean();
+    let response = {
+        products: productsPaginate,
+        numPage: numPage,
+        numPages: numPages
+    }
+    res.status(200).json(response)
+}
+
 async function getProduct(req, res, next) {
     const { productId } = req.params;
     const product = await Product.findById(productId);
@@ -32,6 +52,7 @@ async function deleteProduct(req, res, next) {
 
 module.exports = {
     getAllProducts,
+    getProductsPagination,
     getProduct,
     newProduct,
     editProduct,

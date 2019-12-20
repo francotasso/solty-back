@@ -7,6 +7,9 @@ const { isAuthenticated } = require('../helpers/auth');
 /* GET all products */
 router.get('/products', isAuthenticated, product.getAllProducts);
 
+/* GET products pagination */
+router.get('/products/:numPage', isAuthenticated, product.getProductsPagination)
+
 /* GET one product*/
 router.get('/product/:productId', isAuthenticated, product.getProduct);
 
