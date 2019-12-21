@@ -17,7 +17,7 @@ async function updateUser(req, res, next) {
     const duplicateEmail = await User.find({ email: newUser.email.trim() });
     const validPhone = /^[9][0-9]{8}$/.test(newUser.phone);
     const { userId } = req.params;
-    if (newUser.firstName.trim().length == 0 || newUser.lastName.trim().length == 0 || newUser.email.trim().length == 0 || newUser.gender.trim().length == 0 || newUser.phone.trim().length == 0 || newUser.birthday == null) {
+    if (newUser.firstName.trim().length == 0 || newUser.lastName.trim().length == 0 || newUser.email.trim().length == 0 || newUser.gender.trim().length == 0 || newUser.phone.trim().length == 0 || newUser.birthday.trim().length == 0) {
         res.status(500).json({ text: 'Complete todos los campos' });
     } else if (!validEmail) {
         res.status(500).json({ text: 'Ingrese un email válido' });
