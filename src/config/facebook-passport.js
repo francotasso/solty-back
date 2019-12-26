@@ -5,7 +5,7 @@ const User = require('../models/user');
 const FacebookPassport = new FacebookStrategy({
     clientID: keys.FACEBOOK.clientID,
     clientSecret: keys.FACEBOOK.clientSecret,
-    callbackURL: '/auth/facebook/redirect',
+    callbackURL: `${API.API.self}/auth/facebook/redirect`,
     profileFields: ['name', 'birthday', 'emails', 'gender']
 },
     function (token, tokenSecret, profile, done) {
