@@ -1,6 +1,7 @@
 const FacebookStrategy = require('passport-facebook').Strategy;
 const keys = require('./keys');
 const User = require('../models/user');
+const API = require('../API/API');
 
 const FacebookPassport = new FacebookStrategy({
     clientID: keys.FACEBOOK.clientID,
