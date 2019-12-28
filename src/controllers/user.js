@@ -17,7 +17,9 @@ async function updateUser(req, res, next) {
     const duplicateEmail = await User.find({ email: newUser.email.trim() });
     const validPhone = /^[9][0-9]{8}$/.test(newUser.phone);
     const { userId } = req.params;
-    if (newUser.firstName.trim().length == 0 || newUser.lastName.trim().length == 0 || newUser.email.trim().length == 0 || newUser.gender.trim().length == 0 || newUser.phone.trim().length == 0 || newUser.birthday.trim().length == 0) {
+    if (newUser.gender == undefined || newUser.phone == undefined || newUser.birthday.length === 13) {
+        res.status(500).json({ text: 'Complete todos los campos' });
+    } else if (newUser.firstName.trim().length == 0 || newUser.lastName.trim().length == 0 || newUser.email.trim().length == 0 || newUser.gender.trim().length == 0 || newUser.phone.trim().length == 0 || newUser.birthday.trim().length == 0) {
         res.status(500).json({ text: 'Complete todos los campos' });
     } else if (!validEmail) {
         res.status(500).json({ text: 'Ingrese un email válido' });
@@ -26,8 +28,12 @@ async function updateUser(req, res, next) {
     } else if (!validPhone) {
         res.status(500).json({ text: 'Ingrese un celular válido' });
     } else {
-        await User.findByIdAndUpdate(userId, newUser);
-        res.status(200).json({ text: 'Actualizado correctamente' });
+        if (newUser.firstName.trim() === req.user.firstName && newUser.lastName.trim() === req.user.lastName && newUser.phone.trim() === req.user.phone && newUser.birthday.trim() === req.user.birthday) {
+            res.status(200).json({ text: 'No se presentaron cambios' });
+        } else {
+            await User.findByIdAndUpdate(userId, newUser);
+            res.status(200).json({ text: 'Actualizado correctamente' });
+        }
     }
 }
 

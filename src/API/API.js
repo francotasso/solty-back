@@ -1,7 +1,6 @@
 const API = {
     //url: "http://localhost:8080"
-    url: "https://solty.herokuapp.com",
-    self: "https://solty-back.herokuapp.com"
+    url: "https://solty.herokuapp.com"
 }
 
 module.exports = {
