@@ -1,11 +1,12 @@
 const FacebookStrategy = require('passport-facebook').Strategy;
 const keys = require('./keys');
 const User = require('../models/user');
+const API = require('../API/API.js');
 
 const FacebookPassport = new FacebookStrategy({
     clientID: keys.FACEBOOK.clientID,
     clientSecret: keys.FACEBOOK.clientSecret,
-    callbackURL: '/auth/facebook/redirect',
+    callbackURL: `${API.API.self}/auth/facebook/redirect`,
     profileFields: ['name', 'birthday', 'emails', 'gender']
 },
     function (token, tokenSecret, profile, done) {
