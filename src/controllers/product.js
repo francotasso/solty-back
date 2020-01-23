@@ -6,7 +6,7 @@ async function getAllProducts(req, res, next) {
 }
 
 async function getProductsPagination(req, res, next) {
-    const perPage = 5
+    const perPage = 8
     const numPage = parseInt(req.params.numPage)
     const skipPage = (numPage - 1) * perPage
     const numProducts = await Product.count()

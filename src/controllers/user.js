@@ -29,10 +29,11 @@ async function updateUser(req, res, next) {
         res.status(500).json({ text: 'Ingrese un celular válido' });
     } else {
         if (newUser.firstName.trim() === req.user.firstName && newUser.lastName.trim() === req.user.lastName && newUser.phone.trim() === req.user.phone && newUser.birthday.trim() === req.user.birthday) {
-            res.status(200).json({ text: 'No se presentaron cambios' });
+            res.status(500).json({ text: 'No se presentaron cambios' });
         } else {
             await User.findByIdAndUpdate(userId, newUser);
-            res.status(200).json({ text: 'Actualizado correctamente' });
+            const user = await User.findById(userId);
+            res.status(200).json(user);
         }
     }
 }
@@ -73,7 +74,7 @@ async function deleteUser(req, res, next) {
 }
 
 async function login(req, res, next) {
-    res.status(200).json({ text: `${req.user.firstName} ${req.user.lastName}`, id: req.user._id });
+    res.status(200).json(req.user);
 }
 
 async function logout(req, res, next) {
