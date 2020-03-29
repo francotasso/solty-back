@@ -21,6 +21,7 @@ router.get('/auth/google', passport.authenticate('google', {
 //redirect url
 router.get('/auth/google/redirect', passport.authenticate('google'),
     (req, res) => {
+        if(req.ip === '127.0.0.1') res.redirect('http://localhost:8080/oauth');
         let url = `${API.API.url}/oauth`
         res.redirect(url);
     }
@@ -32,6 +33,7 @@ router.get('/auth/facebook', passport.authenticate('facebook'));
 //redirect url
 router.get('/auth/facebook/redirect', passport.authenticate('facebook'),
     (req, res) => {
+        if(req.ip === '127.0.0.1') res.redirect('http://localhost:8080/oauth');
         let url = `${API.API.url}/oauth`
         res.redirect(url);
     }
