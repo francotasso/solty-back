@@ -3,6 +3,7 @@ const API = {
     //self: "http:localhost:3000"
     url: "https://solty.herokuapp.com",
     self: "https://solty-back.herokuapp.com"
+    //
 }
 
 module.exports = {
