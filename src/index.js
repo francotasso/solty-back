@@ -31,8 +31,19 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(bodyParser.json());
 //app.use(cors({ credentials: true, origin: API.API.url }));
-app.use(cors());
-/*app.use(function (req, res, next) {
+const whitelist = ['http://localhost:8080', 'https://solty.herokuapp.com']
+const corsOptions = {
+  credentials: true,
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
+app.use(cors(corsOptions));
+app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Origin', req.headers.origin);
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
@@ -42,7 +53,7 @@ app.use(cors());
     } else {
         next();
     }
-});*/
+});
 
 //session
 app.use(session({
