@@ -5,15 +5,11 @@ const session = require('express-session');
 const passport = require('passport');
 const passportSetup = require('./config/passport');
 const cors = require('cors');
-const API = require('./API/API')
 const path = require('path');
 const app = express();
 const db = require('./dbconnection.js');
 const keys = require('./config/keys');
-const users = require('./routes/user.js');
-const oauth = require('./routes/oauth.js');
-const products = require('./routes/product.js');
-const payments = require('./routes/payments.js');
+const routes = require('./routes');
 
 //Db connection
 db.connection;
@@ -30,12 +26,11 @@ app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(bodyParser.json());
-//app.use(cors({ credentials: true, origin: API.API.url }));
-const whitelist = ['http://localhost:8080', 'https://solty.herokuapp.com']
+const allowedList = ['http://localhost:8080', 'https://solty.herokuapp.com']
 const corsOptions = {
   credentials: true,
   origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
+    if (allowedList.indexOf(origin) !== -1) {
       callback(null, true)
     } else {
       callback(new Error('Not allowed by CORS'))
@@ -60,20 +55,17 @@ app.use(session({
     secret: keys.SESSION.secret,
     resave: false,
     saveUninitialized: false,
-    /*cookie: {
+    cookie: {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        maxAge: 24 * 60 * 60 * 1000
-    }*/
+        maxAge: 15 * 60 * 60 * 1000
+    }
 }));
 app.use(passport.initialize());
 app.use(passport.session());
 
 //Routes
-app.use(users);
-app.use(oauth);
-app.use(products);
-app.use(payments);
+app.use(routes);
 
 app.listen(app.get('port'), () => {
     console.log('Running in port', app.get('port'));
