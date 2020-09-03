@@ -26,7 +26,7 @@ app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(bodyParser.json());
-const allowedList = ['http://localhost:8080', 'https://solty.herokuapp.com']
+/* const allowedList = ['http://localhost:8080', 'https://solty.herokuapp.com']
 const corsOptions = {
   credentials: true,
   origin: function (origin, callback) {
@@ -36,8 +36,8 @@ const corsOptions = {
       callback(new Error('Not allowed by CORS'))
     }
   }
-}
-app.use(cors(corsOptions));
+} */
+app.use(cors({ credentials: true, origin: 'https://solty.herokuapp.com' }));
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Origin', req.headers.origin);
