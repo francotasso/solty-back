@@ -9,7 +9,11 @@ const path = require('path');
 const app = express();
 const db = require('./dbconnection.js');
 const keys = require('./config/keys');
-const routes = require('./routes');
+//const routes = require('./routes');
+const users = require('./routes/user.js');
+const oauth = require('./routes/oauth.js');
+const products = require('./routes/product.js');
+const payments = require('./routes/payments.js');
 
 //Db connection
 db.connection;
@@ -26,7 +30,7 @@ app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(bodyParser.json());
-/* const allowedList = ['http://localhost:8080', 'https://solty.herokuapp.com']
+const allowedList = ['http://localhost:8080', 'https://solty.herokuapp.com']
 const corsOptions = {
   credentials: true,
   origin: function (origin, callback) {
@@ -36,37 +40,41 @@ const corsOptions = {
       callback(new Error('Not allowed by CORS'))
     }
   }
-} */
-app.use(cors({ credentials: true, origin: 'https://solty.herokuapp.com' }));
+}
+app.use(cors(corsOptions));
 app.use(function (req, res, next) {
-    res.header('Access-Control-Allow-Credentials', true);
-    res.header('Access-Control-Allow-Origin', req.headers.origin);
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
-    if ('OPTIONS' == req.method) {
-        res.send(200);
-    } else {
-        next();
-    }
+  res.header('Access-Control-Allow-Credentials', true);
+  res.header('Access-Control-Allow-Origin', req.headers.origin);
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
+  if ('OPTIONS' == req.method) {
+    res.send(200);
+  } else {
+    next();
+  }
 });
 
 //session
 app.use(session({
-    secret: keys.SESSION.secret,
-    resave: false,
-    saveUninitialized: false,
-    /* cookie: {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        maxAge: 15 * 60 * 60 * 1000
-    } */
+  secret: keys.SESSION.secret,
+  resave: false,
+  saveUninitialized: false,
+  /* cookie: {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 15 * 60 * 60 * 1000
+  } */
 }));
 app.use(passport.initialize());
 app.use(passport.session());
 
 //Routes
-app.use(routes);
+//app.use(routes);
+app.use('/api/v1', users);
+app.use('/api/v1', oauth);
+app.use('/api/v1', products);
+app.use('/api/v1', payments);
 
 app.listen(app.get('port'), () => {
-    console.log('Running in port', app.get('port'));
+  console.log('Running in port', app.get('port'));
 });
