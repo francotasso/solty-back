@@ -70,10 +70,10 @@ app.use(passport.session());
 
 //Routes
 //app.use(routes);
-app.use('/api/v1', users);
-app.use('/api/v1', oauth);
-app.use('/api/v1', products);
-app.use('/api/v1', payments);
+app.use(users);
+app.use(oauth);
+app.use(products);
+app.use(payments);
 
 app.listen(app.get('port'), () => {
   console.log('Running in port', app.get('port'));
