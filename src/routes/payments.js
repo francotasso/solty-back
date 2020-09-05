@@ -1,8 +1,6 @@
 const router = require('express-promise-router')();
-
 const payment = require('../controllers/payment');
-
-const { isAuthenticated } = require('../helpers/auth');
+const { isAuthenticated } = require('../authentication/auth');
 
 /* GET all products */
 router.get('/payments', isAuthenticated, payment.getAllPayments);

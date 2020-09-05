@@ -1,7 +1,6 @@
 const router = require('express-promise-router')();
 const user = require('../controllers/user');
-const passport = require('passport');
-const { isAuthenticated } = require('../helpers/auth');
+const { isAuthenticated } = require('../authentication/auth');
 
 /* GET all users */
 router.get('/users', user.getAllUsers);
@@ -19,7 +18,7 @@ router.delete('/user/:userId', isAuthenticated, user.deleteUser);
 router.post('/register', user.registerUser);
 
 /* SIGNIN user */
-router.post('/login', passport.authenticate('local'), user.login);
+router.post('/login', user.login);
 
 /* LOGOUT user */
 router.get('/logout', user.logout);

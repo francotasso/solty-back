@@ -1,3 +1,5 @@
+
+const jwt = require('../authentication/jwt');
 const User = require('../models/user');
 
 async function getAllUsers(req, res, next) {
@@ -74,7 +76,22 @@ async function deleteUser(req, res, next) {
 }
 
 async function login(req, res, next) {
-    res.status(200).json(req.user);
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) {
+        res.status(500).json({ message: 'El usuario no existe' });
+    } else {
+        const match = await user.matchPassword(password);
+        if (match) {
+            delete user.password;
+            const data = {
+                token: jwt.createUserToken(user)
+            }
+            res.status(200).json({ data, message: 'Sesión iniciada' });
+        } else {
+            res.status(500).json({ message: 'Contraseña incorrecta' });
+        }
+    }
 }
 
 async function logout(req, res, next) {

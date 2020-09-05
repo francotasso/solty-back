@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
+const { dbURL } = require('./config/base');
 
-const cnt = mongoose.connect('mongodb+srv://francotasso:16200241@sales-gkbrc.gcp.mongodb.net/test?retryWrites=true&w=majority', {
+const cnt = mongoose.connect(dbURL, {
     useNewUrlParser: true
 }).then(db => console.log('db is connected'))
     .catch(err => console.log(err));

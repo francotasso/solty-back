@@ -1,8 +1,6 @@
 const router = require('express-promise-router')();
-
 const product = require('../controllers/product');
-
-const { isAuthenticated } = require('../helpers/auth');
+const { isAuthenticated } = require('../authentication/auth');
 
 /* GET all products */
 router.get('/products', isAuthenticated, product.getAllProducts);
