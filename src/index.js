@@ -26,7 +26,7 @@ app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(bodyParser.json());
-const allowedList = ['http://localhost:8080', 'https://solty.herokuapp.com']
+const allowedList = ['http://localhost:8080', 'http://localhost:8081', 'https://solty.herokuapp.com']
 const corsOptions = {
   credentials: true,
   origin: function (origin, callback) {
