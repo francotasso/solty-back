@@ -9,11 +9,7 @@ const path = require('path');
 const app = express();
 const db = require('./dbconnection.js');
 const keys = require('./config/keys');
-//const routes = require('./routes');
-const users = require('./routes/user.js');
-const oauth = require('./routes/oauth.js');
-const products = require('./routes/product.js');
-const payments = require('./routes/payments.js');
+const routes = require('./routes');
 
 //Db connection
 db.connection;
@@ -69,11 +65,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //Routes
-//app.use(routes);
-app.use(users);
-app.use(oauth);
-app.use(products);
-app.use(payments);
+app.use(routes);
 
 app.listen(app.get('port'), () => {
   console.log('Running in port', app.get('port'));
