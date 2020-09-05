@@ -30,7 +30,6 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((id, done) => {
     User.findById(id, (err, user) => {
-        console.log('USER DESERIALIZE: ', user);
         done(err, user);
     });
 });

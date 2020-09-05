@@ -74,7 +74,6 @@ async function deleteUser(req, res, next) {
 }
 
 async function login(req, res, next) {
-    console.log('USER LOGIN: ', req.user);
     res.status(200).json(req.user);
 }
 

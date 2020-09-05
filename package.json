@@ -17,6 +17,7 @@
     "express": "^4.17.1",
     "express-promise-router": "^3.0.3",
     "express-session": "^1.16.2",
+    "memorystore": "^1.6.2",
     "moment": "^2.24.0",
     "mongoose": "^5.6.6",
     "mongoose-timezone": "^1.2.0",
