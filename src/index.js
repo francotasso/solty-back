@@ -2,7 +2,6 @@ const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const session = require('express-session');
-const MemoryStore = require('memorystore')(session);
 const passport = require('passport');
 const passportSetup = require('./config/passport');
 const cors = require('cors');
@@ -56,14 +55,11 @@ app.use(session({
   secret: keys.SESSION.secret,
   resave: false,
   saveUninitialized: false,
-  cookie: {
+  /* cookie: {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       maxAge: 15 * 60 * 60 * 1000
-  },
-  store: new MemoryStore({
-    checkPeriod: 15 * 60 * 60 * 1000
-  })
+  } */
 }));
 app.use(passport.initialize());
 app.use(passport.session());
