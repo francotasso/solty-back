@@ -6,6 +6,9 @@ const { isAuthenticated } = require('../authentication/auth');
 router.get('/products', isAuthenticated, product.getAllProducts);
 
 /* GET products by category */
+router.get('/products/category/:category', isAuthenticated, product.getCategoryProducts);
+
+/* GET products by category */
 router.get('/products/related/:category', isAuthenticated, product.getProductsByCategory)
 
 /* GET products by query */
