@@ -30,8 +30,8 @@ async function getProductsByQuery(req, res, next) {
     res.status(200).json(products)
 }
 
-async function getCategoryProducts(req, res, next) {
-    const products = await Product.find({ gender: req.params.category });
+async function getCategoryGender(req, res, next) {
+    const products = await Product.find({ gender: req.params.gender });
     res.status(200).json(products);
 }
 
@@ -67,7 +67,7 @@ async function deleteProduct(req, res, next) {
 
 module.exports = {
     getAllProducts,
-    getCategoryProducts,
+    getCategoryGender,
     getProductsPagination,
     getProductsByQuery,
     getProductsByCategory,
